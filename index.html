@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Hacker Motivation System</title>
+
+<style>
+
+body{
+margin:0;
+background:black;
+color:#00ff00;
+font-family:Consolas,monospace;
+overflow:hidden;
+}
+
+/* matrix */
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-1;
+}
+
+/* terminal */
+
+#terminal{
+position:absolute;
+top:0;
+left:0;
+padding:30px;
+font-size:18px;
+}
+
+#menu{
+display:none;
+position:absolute;
+top:40%;
+width:100%;
+text-align:center;
+}
+
+button{
+background:black;
+color:#00ff00;
+border:2px solid #00ff00;
+padding:12px 25px;
+margin:10px;
+font-size:20px;
+cursor:pointer;
+}
+
+button:hover{
+background:#00ff00;
+color:black;
+}
+
+/* glitch */
+
+.glitch{
+animation:glitch 0.4s;
+}
+
+@keyframes glitch{
+0%{transform:translate(5px)}
+25%{transform:translate(-5px)}
+50%{transform:translate(5px)}
+75%{transform:translate(-5px)}
+100%{transform:translate(0)}
+}
+
+/* fire skull */
+
+.skull{
+position:absolute;
+top:-50px;
+font-size:35px;
+color:#00ff00;
+text-shadow:
+0 0 5px #00ff00,
+0 0 10px #00ff00,
+0 0 20px #00ff00,
+0 0 40px #00ff00;
+animation:fall linear;
+}
+
+@keyframes fall{
+to{transform:translateY(110vh);}
+}
+
+#pesan{
+margin-top:25px;
+font-size:24px;
+}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div id="terminal"></div>
+
+<div id="menu">
+
+<h2>SELECT USER</h2>
+
+<button onclick="pilih('Nakson')">Nakson</button>
+<button onclick="pilih('Kigo')">Kigo</button>
+<button onclick="pilih('Charel')">Charel</button>
+<button onclick="pilih('Farell')">Farell</button>
+
+<div id="pesan"></div>
+
+</div>
+
+<audio id="access" src="access.mp3"></audio>
+
+<script>
+
+/* fullscreen */
+
+document.documentElement.requestFullscreen?.();
+
+/* terminal loading */
+
+let terminal=document.getElementById("terminal");
+
+let lines=[
+"Initializing system...",
+"Bypassing firewall...",
+"Decrypting database...",
+"Scanning users...",
+"Loading motivation protocol...",
+"System ready."
+];
+
+let i=0;
+
+function typeLine(){
+
+if(i<lines.length){
+
+terminal.innerHTML+=lines[i]+"<br>";
+
+i++;
+
+setTimeout(typeLine,800);
+
+}else{
+
+startProgress();
+
+}
+
+}
+
+typeLine();
+
+function startProgress(){
+
+let p=0;
+
+let progress=setInterval(()=>{
+
+terminal.innerHTML+="Progress "+p+"%<br>";
+
+p+=10;
+
+if(p>100){
+
+clearInterval(progress);
+
+terminal.style.display="none";
+
+document.getElementById("menu").style.display="block";
+
+}
+
+},200);
+
+}
+
+/* matrix */
+
+let canvas=document.getElementById("matrix");
+
+let ctx=canvas.getContext("2d");
+
+canvas.height=window.innerHeight;
+
+canvas.width=window.innerWidth;
+
+let letters="アイウエオカキクケコ012345";
+
+letters=letters.split("");
+
+let fontSize=16;
+
+let columns=canvas.width/fontSize;
+
+let drops=[];
+
+for(let x=0;x<columns;x++)
+drops[x]=1;
+
+function draw(){
+
+ctx.fillStyle="rgba(0,0,0,0.05)";
+
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+ctx.fillStyle="#0F0";
+
+ctx.font=fontSize+"px monospace";
+
+for(let i=0;i<drops.length;i++){
+
+let text=letters[Math.floor(Math.random()*letters.length)];
+
+ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+
+if(drops[i]*fontSize>canvas.height && Math.random()>0.975)
+drops[i]=0;
+
+drops[i]++;
+
+}
+
+}
+
+setInterval(draw,33);
+
+/* skull fire */
+
+function skullRain(){
+
+let skull=document.createElement("div");
+
+skull.className="skull";
+
+skull.innerHTML="💀";
+
+skull.style.left=Math.random()*100+"vw";
+
+skull.style.animationDuration=(Math.random()*3+2)+"s";
+
+document.body.appendChild(skull);
+
+setTimeout(()=>skull.remove(),5000);
+
+}
+
+setInterval(skullRain,300);
+
+/* pilih user */
+
+function pilih(nama){
+
+document.body.classList.add("glitch");
+
+setTimeout(()=>{
+
+document.body.classList.remove("glitch");
+
+},400);
+
+document.getElementById("access").play();
+
+let pesan="";
+
+if(nama=="Nakson")
+pesan="ACCESS GRANTED — Nakson tetap semangat Dari Yoel!";
+
+if(nama=="Kigo")
+pesan="ACCESS GRANTED — Kigo jangan menyerah Dari Yoel!";
+
+if(nama=="Charel")
+pesan="ACCESS GRANTED — Charel kamu kuat Dari Yoel!";
+
+if(nama=="Farell")
+pesan="ACCESS GRANTED — Farell masa depan cerah Dari Yoel!";
+
+document.getElementById("pesan").innerHTML=pesan;
+
+}
+
+</script>
+
+</body>
+</html>
